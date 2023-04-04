@@ -150,7 +150,16 @@ public class Gra {
 
     private boolean czyObajGraczeMajaStatki() {
 
-        return false;
+        boolean posiadaNiezatopioneStatki[] = new boolean[2];
+
+        for(int i = 0; i < 2; i++) {
+            for (Statek statek : gracze[i].getStatki()) {
+                posiadaNiezatopioneStatki[i] |= !statek.isZatopiony(); // tab[i] = tab[i] || statek.isZatopiony()
+            }
+        }
+
+        return posiadaNiezatopioneStatki[0] && posiadaNiezatopioneStatki[1];
+
     }
 
     private Pozycja pobierzPozycjeDoStrzalu(Gracz gracz) {
