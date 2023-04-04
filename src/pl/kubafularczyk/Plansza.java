@@ -49,13 +49,13 @@ public class Plansza {
                     plansze[i][j][k] = "."; // wstepne uzupelnienie
 
                     if(k == 0 && j == 0){
-                        plansze[i][j][k] = leftPadSpace("\\") + " ";
+                        plansze[i][j][k] = leftPadSpace("\\") + "";
                     } else if(k == 0) {
                         // 10 -> "10 "
                         // 9 ->  " 9 ";
-                        plansze[i][j][k] = leftPadSpace(j) + " ";
+                        plansze[i][j][k] = leftPadSpace(j) + "";
                     } else if(j == 0) {
-                        plansze[i][j][k] = (char)('A' + k - 1) + " ";
+                        plansze[i][j][k] = (char)('A' + k - 1) + "";
                     }
                 }
             }
@@ -66,10 +66,8 @@ public class Plansza {
             String oznaczenie = gracz instanceof GraczZywy ? "Z" : "A";
             for(Statek statek : gracz.getStatki()) {
                 for(CzescStatku czescStatku : statek.getCzesciStatku()) {
-                    if(plansze[i])
                     Pozycja pozycja = czescStatku.getPozycja();
-
-                    plansze[i][pozycja.getY()][pozycja.getX()] = oznaczenie;
+                    plansze[i][pozycja.getY()+1][pozycja.getX()+1] = oznaczenie;
                 }
             }
             for(Pozycja pozycjaStrzalu : gracz.getStrzaly()) {
@@ -78,10 +76,10 @@ public class Plansza {
         }
 
 
-        for(int i = 0; i < rozmiar; i++){
+        for(int i = 0; i < rozmiar + 1; i++){
             int k = 0; // numer gracza/planszy
-            for(int j = 0; j <= rozmiar && k < 2; j++){
-                if(j == rozmiar) {
+            for(int j = 0; j <= rozmiar + 1 && k < 2; j++){
+                if(j == rozmiar + 1) {
                     System.out.print("\t" + " ");
                     k++;
                     j = -1;

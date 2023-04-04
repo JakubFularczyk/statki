@@ -122,6 +122,7 @@ public class Gra {
     }
 
     public static int obliczMaksymalnaDlugoscStatku() {
+        // TODO zmienic dlugosc statku na zmienna ktora wpisuje gracz lub losuje (gra moze prosic o podanie statkow o konkretnej dlugosci)
         int dlugoscStatku = 4;
         return dlugoscStatku;
     }
