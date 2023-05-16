@@ -35,12 +35,21 @@ public class Statek {
         this.znak = znak;
     }
 
+    public Gracz getWlasciciel() {
+        return wlasciciel;
+    }
+
     public boolean isZatopiony() {
         return zatopiony;
     }
 
-    public void setZatopiony(boolean zatopiony) {
-        this.zatopiony = zatopiony;
+    public void zaktualizujStan() {
+        zatopiony = true;
+        for(CzescStatku czescStatku : czesciStatku) {
+            if(!czescStatku.isZatopiona()) {
+                zatopiony = false;
+                return;
+            }
+        }
     }
-
 }

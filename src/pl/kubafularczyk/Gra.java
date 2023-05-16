@@ -4,11 +4,13 @@ import java.util.*;
 
 public class Gra {
 
-    private final int LICZBA_GRACZY = 2;
+    public static final int LICZBA_GRACZY = 2;
+    private final Scanner scanner = new Scanner(System.in);
     private Gracz[] gracze;
     private Plansza plansza;
     private Komentator komentator;
-    private final Scanner SCANNER = new Scanner(System.in);
+    private RodzajRozgrywki rodzaj;
+
 
     public void uruchom() {
         inicjalizujRozgrywke();
@@ -47,29 +49,28 @@ public class Gra {
 
     private void stworzGraczy() {
         gracze = new Gracz[LICZBA_GRACZY];
-        RodzajRozgrywki rodzaj;
         System.out.println("Gracz Zywy vs Gracz AI wpisz = 1\nGracz Zywy vs Gracz Zywy wpisz = 2\nGracz AI vs Gracz AI wpisz = 3");
         while(true) {
             try {
-                int odpowiedz = SCANNER.nextInt();
-                rodzaj = RodzajRozgrywki.parse(odpowiedz);
+                int odpowiedz = scanner.nextInt();
+                this.rodzaj = RodzajRozgrywki.parse(odpowiedz);
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Gracz Zywy vs Gracz AI wpisz = 1\nGracz Zywy vs Gracz Zywy wpisz = 2\nGracz AI vs Gracz AI wpisz = 3");
             } catch (BlednyRodzajRozgrywkiException e) {
                 System.out.println("Dozwolone sa tylko numery od 1 do 3");
             } finally {
-                SCANNER.nextLine(); // pobranie znaku nowej linii
+                scanner.nextLine(); // pobranie znaku nowej linii
             }
         }
 
-        if(RodzajRozgrywki.GRACZ_ZYWY_VS_GRACZ_AI.equals(rodzaj)) {
+        if(RodzajRozgrywki.GRACZ_ZYWY_VS_GRACZ_AI.equals(this.rodzaj)) {
             gracze[0] = new GraczZywy();
             gracze[1] = new GraczAI();
-        } else if (RodzajRozgrywki.GRACZ_ZYWY_VS_GRACZ_ZYWY.equals(rodzaj)) {
+        } else if (RodzajRozgrywki.GRACZ_ZYWY_VS_GRACZ_ZYWY.equals(this.rodzaj)) {
             gracze[0] = new GraczZywy();
             gracze[1] = new GraczZywy();
-        } else if (RodzajRozgrywki.GRACZ_AI_VS_GRACZ_AI.equals(rodzaj)) {
+        } else if (RodzajRozgrywki.GRACZ_AI_VS_GRACZ_AI.equals(this.rodzaj)) {
             gracze[0] = new GraczAI();
             gracze[1] = new GraczAI();
         }
@@ -77,7 +78,7 @@ public class Gra {
 
     private void stworzPlansze() {
         System.out.println("Podaj wielkosc planszy");
-        int wielkoscPlanszy = SCANNER.nextInt();
+        int wielkoscPlanszy = scanner.nextInt();
         plansza = new Plansza(wielkoscPlanszy);
     }
 
@@ -87,19 +88,21 @@ public class Gra {
      */
     private void stworzStatki() {
         System.out.println("Podaj liczbe statkow");
-        int liczbaStatkow = SCANNER.nextInt();
+        int liczbaStatkow = scanner.nextInt();
+        int dlugoscStatku = obliczDlugoscStatku(plansza.getRozmiar());
 
         for(Gracz gracz : gracze) {
-            stworzStatki(gracz, liczbaStatkow);
+            stworzStatki(gracz, liczbaStatkow, dlugoscStatku);
         }
     }
 
-    private void stworzStatki(Gracz gracz, int liczbaStatkow) {
+
+    private void stworzStatki(Gracz gracz, int liczbaStatkow, int dlugosc) {
         // stworzenie tablicy
         Statek[] statki = new Statek[liczbaStatkow];
-        for(int i = 0; i < liczbaStatkow; ) { // petli for each nie stosuje sie gdy bedzie przypisanie
+
+        for(int i = 0; i < liczbaStatkow;) { // petli for each nie stosuje sie gdy bedzie przypisanie
             PolozenieStatku polozenie = gracz.wybierzPolozenie(plansza.getRozmiar());
-            int dlugosc = obliczMaksymalnaDlugoscStatku();
             polozenie.setDlugosc(dlugosc);
             if (plansza.czyPolozeniePoprawne(polozenie)) {
                 statki[i] = plansza.stworzStatekWPolozeniu(polozenie, gracz);
@@ -121,20 +124,30 @@ public class Gra {
         // jak nie jest ok to powtorzenie z jakims komunikatem
     }
 
-    public static int obliczMaksymalnaDlugoscStatku() {
-        // TODO zmienic dlugosc statku na zmienna ktora wpisuje gracz lub losuje (gra moze prosic o podanie statkow o konkretnej dlugosci)
-        int dlugoscStatku = 4;
+    private int obliczDlugoscStatku(int rozmiar) {
+        int dlugoscStatku;
+        if (RodzajRozgrywki.GRACZ_AI_VS_GRACZ_AI.equals(rodzaj)) {
+            Random random = new Random();
+            dlugoscStatku = random.nextInt(rozmiar/2) + 1;
+        } else {
+            System.out.println("Podaj dlugosc statku nie wieksza niz polowa dlugosci planszy");
+            dlugoscStatku = scanner.nextInt();
+            while(dlugoscStatku > rozmiar/2 || dlugoscStatku <= 0) {
+                System.out.println("Statki zbyt duze, musisz podac rozmiar z przedzialu 1-" + rozmiar/2 );
+                dlugoscStatku = scanner.nextInt();
+            }
+        }
         return dlugoscStatku;
     }
 
     private void startRozgrywki() {
         Gracz gracz = losujGraczaRozpoczynajacego();
+        komentator.start(gracz);
         while(czyObajGraczeMajaStatki()) {
             Pozycja pozycja = pobierzPozycjeDoStrzalu(gracz);
-            RodzajTrafienia rodzajTrafienia = strzel(pozycja);
-            gracz.addStrzal(pozycja);
+            RodzajTrafienia rodzajTrafienia = strzel(pozycja, gracz);
             plansza.wydrukuj2(gracze);
-            komentator.skomentujTrafienie();
+            komentator.skomentujTrafienie(rodzajTrafienia);
             if (RodzajTrafienia.NIECELNE.equals(rodzajTrafienia)) {
                 gracz = zmienGracza(gracz);
             }
@@ -159,16 +172,33 @@ public class Gra {
         }
 
         return posiadaNiezatopioneStatki[0] && posiadaNiezatopioneStatki[1];
-
     }
 
     private Pozycja pobierzPozycjeDoStrzalu(Gracz gracz) {
+        while(true) {
+            System.out.println("Podaj pozycje do strzalu w formacie litera liczba np. A1, D7");
+            Pozycja pozycja = gracz.podajPozycjeStrzalu(plansza.getRozmiar());
+            PolePlanszy polePlanszy = plansza.pobierzPolePlanszy(pozycja);
+            if (null != polePlanszy) {
+                CzescStatku czescStatku = polePlanszy.getCzescStatku();
+                Statek statek = czescStatku.getStatek();
+                if (statek.getWlasciciel() == gracz) {
+                    System.out.println("Nie mozesz strzelic w swoj statek!");
+                    continue;
 
-        return null;
+                }
+            }
+            return pozycja;
+        }
     }
 
-    private RodzajTrafienia strzel(Pozycja pozycja) {
-
+    private RodzajTrafienia strzel(Pozycja pozycja, Gracz gracz) {
+        PolePlanszy polePlanszy = plansza.pobierzPolePlanszy(pozycja);
+        gracz.addStrzal(pozycja);
+        if(polePlanszy != null) {
+            polePlanszy.oznaczJakoTrafione();
+            return RodzajTrafienia.CELNE;
+        }
         return RodzajTrafienia.NIECELNE;
     }
 

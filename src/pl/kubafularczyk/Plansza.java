@@ -15,32 +15,6 @@ public class Plansza {
     // statki najezdzaja na oznaczenia ABCD, 1234,
     // tablica u góry sie rozjezdza w miare zwiekszajacej sie ilosci oznaczen ABC itd
 
-    public void wydrukujProsciej() {
-        // wydrukowac dwa kwadraty kolo siebie rozmiar 10
-        // jeden kwadrrat z kropek, drugi z gwiazdek
-
-        // 0 - 19
-        // 10 -> 0 (10%10 = 0)
-        // 0 -> 0 (0%10 = 0)
-        // 0-9 0-9
-
-        int rozmiar = 10;
-        for(int i = 0; i < rozmiar; i++){
-            for(int j = 0; j < rozmiar * 2; j++){
-                if(j == rozmiar) {
-                    System.out.print("\t");
-                }
-                if(j < rozmiar) {
-                    System.out.print(". ");
-                } else {
-                    System.out.print("* ");
-                }
-
-            }
-            System.out.println();
-        }
-    }
-
     public void wydrukuj2(Gracz[] gracze) {
         String[][][] plansze = new String[2][rozmiar + 1][rozmiar + 1];
         for(int i = 0; i < plansze.length; i++) {
@@ -51,8 +25,8 @@ public class Plansza {
                     if(k == 0 && j == 0){
                         plansze[i][j][k] = leftPadSpace("\\") + "";
                     } else if(k == 0) {
-                        // 10 -> "10 "
-                        // 9 ->  " 9 ";
+                        // 10 -> "10"
+                        // 9 ->  " 9";
                         plansze[i][j][k] = leftPadSpace(j) + "";
                     } else if(j == 0) {
                         plansze[i][j][k] = (char)('A' + k - 1) + "";
@@ -71,7 +45,7 @@ public class Plansza {
                 }
             }
             for(Pozycja pozycjaStrzalu : gracz.getStrzaly()) {
-                plansze[i][pozycjaStrzalu.getY()][pozycjaStrzalu.getX()] = "X";
+                plansze[i][pozycjaStrzalu.getY()+1][pozycjaStrzalu.getX()+1] = "X";
             }
         }
 
@@ -104,45 +78,6 @@ public class Plansza {
         return leftPadSpace(number + "");
     }
 
-
-        public void wydrukuj(Gracz[] gracze) {
-        for(int i = 0; i < rozmiar; i++){
-            int k = 0;
-            for(int j = 0; j <= rozmiar && k < 2; j++){
-                if(j == rozmiar) {
-                    System.out.print("\t");
-                    k++;
-                    j = -1;
-                    continue;
-                }
-                if(k == 0) {
-                    // statki gracza 0 i trafienia gracza 1 (pudla i celne)
-                    // jesli na polu planszy jest statek gracza 0 == S, jesli jest strzal gracza 1 == X, else == .
-                    if(polaPlanszy[i][j]   != null){
-                        //if(gracze[0].getStatki())
-                        System.out.print("S ");
-                    } else{
-                        System.out.print(". ");
-                    }
-                } else {
-                    // trafienia gracza 0 (pudla i celne)
-                    // jesli na polu planszy jest statek gracza 1 == S, jesli jest strzal gracza 0 == X, else == .
-                    if(polaPlanszy[i][j] == null) {
-                        System.out.print(". ");
-                    } else if (!polaPlanszy[i][j].isTrafione()) {
-                        // tymczasowo
-                        System.out.print("E ");
-                    } else if(polaPlanszy[i][j].isTrafione()){
-                        System.out.print("X ");
-                    }
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-        System.out.println();
-    }
-
     public PolePlanszy[][] getPolaPlanszy() {
         return polaPlanszy;
     }
@@ -159,12 +94,10 @@ public class Plansza {
         int y = pozycja.getY();
         int dlugosc = polozenie.getDlugosc();
         PolozenieStatku.Orientacja orientacja = polozenie.getOrientacja();
-        if(!(x >= 0 && x < rozmiar)){
+        if(!pozycja.czyMiesciSieNaPlanszy(rozmiar)) {
             return false;
         }
-        if(!(y >= 0 && y < rozmiar)){
-            return false;
-        }
+
         if (orientacja == null) {
             return false;
         }
@@ -247,6 +180,9 @@ public class Plansza {
         return statek;
     }
 
+    public PolePlanszy pobierzPolePlanszy(Pozycja pozycja) {
 
+        return polaPlanszy[pozycja.getY()][pozycja.getX()];
+    }
 
 }

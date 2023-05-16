@@ -21,7 +21,8 @@ public class PolePlanszy {
         return trafione;
     }
 
-    public void setTrafione(boolean trafione) {
-        this.trafione = trafione;
+    public void oznaczJakoTrafione() {
+        trafione = true;
+        czescStatku.oznaczJakoTrafiona();
     }
 }

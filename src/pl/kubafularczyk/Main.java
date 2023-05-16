@@ -17,6 +17,14 @@ public class Main {
     // 5.enum z zaznaczeniem czyja tura aktualnie jest
     // Projekt z enkapsulacja - co sie da robimy jako !private! - pomówić o enkapsulacji ogółem + gettery/settery
     public static void main(String[] args) {
+
+        // statyczne wywolanie metody main (bez uzycia obiektu)
+        // Main.main(null);
+
+        // wywolanie metody main na obiekcie
+        // Main main = new Main();
+        // main.main(null);
+
         Gra gra = new Gra();
         gra.uruchom();
     }

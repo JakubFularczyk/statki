@@ -10,6 +10,7 @@ public class PolozenieStatku {
         POZIOMA, PIONOWA;
 
         public static Orientacja parse(String tekst) {
+            tekst = tekst.trim();
             for(Orientacja orientacja : Orientacja.values()) {
                 if (orientacja.name().equalsIgnoreCase(tekst)) {
                     return orientacja;

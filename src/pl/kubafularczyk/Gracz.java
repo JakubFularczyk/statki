@@ -2,12 +2,14 @@ package pl.kubafularczyk;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 // interface?
 public abstract class Gracz {
 
     private Statek[] statki;
     private List<Pozycja> strzaly;
+    protected final Scanner SCANNER = new Scanner(System.in);
 
     public Gracz() {
         this.strzaly = new ArrayList<>();
@@ -34,4 +36,6 @@ public abstract class Gracz {
     }
 
     public abstract PolozenieStatku wybierzPolozenie(int rozmiarPlanszy);
+
+    public abstract Pozycja podajPozycjeStrzalu(int rozmiarPlanszy);
 }

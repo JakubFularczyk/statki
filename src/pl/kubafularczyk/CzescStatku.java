@@ -2,23 +2,25 @@ package pl.kubafularczyk;
 
 public class CzescStatku {
     private Statek statek;
-
-    private boolean zatopiona;
-
     private Pozycja pozycja;
+    private boolean zatopiona;
 
     public CzescStatku(int x, int y, Statek statek) {
         this.pozycja = new Pozycja(x,y);
         this.statek = statek;
     }
 
+    public Statek getStatek() {
+        return statek;
+    }
+
     public boolean isZatopiona() {
         return zatopiona;
     }
 
-    public void setZatopiona(boolean zatopiona) {
+    public void zatop() {
 
-        this.zatopiona = zatopiona;
+        this.zatopiona = true;
     }
 
     public Pozycja getPozycja() {
@@ -27,5 +29,10 @@ public class CzescStatku {
 
     public void setPozycja(Pozycja pozycja) {
         this.pozycja = pozycja;
+    }
+
+    public void oznaczJakoTrafiona() {
+        zatopiona = true;
+        statek.zaktualizujStan();
     }
 }
