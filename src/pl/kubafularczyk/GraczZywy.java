@@ -13,10 +13,8 @@ public class GraczZywy extends Gracz {
 
     @Override
     public PolozenieStatku wybierzPolozenie(int rozmiarPlanszy) {
-
         System.out.println("Podaj pozycje statku w formacie litera liczba np. A1, D7");
         Pozycja pozycja = odczytajPozycje();
-
         System.out.println("Wybierz orientacje statku (pionowa/pozioma)");
         PolozenieStatku.Orientacja orientacja = PolozenieStatku.Orientacja.parse(SCANNER.nextLine());
         PolozenieStatku polozenieStatku = new PolozenieStatku(pozycja, orientacja);

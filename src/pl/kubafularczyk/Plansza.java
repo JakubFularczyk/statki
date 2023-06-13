@@ -10,11 +10,6 @@ public class Plansza {
         this.rozmiar = rozmiar;
     }
 
-    // TODO widac ograniczenie w drukowaniu samych pol planszy - do przemyslenia
-    // TODO dlaczego statki sa niepelne?
-    // statki najezdzaja na oznaczenia ABCD, 1234,
-    // tablica u góry sie rozjezdza w miare zwiekszajacej sie ilosci oznaczen ABC itd
-
     public void wydrukuj2(Gracz[] gracze) {
         String[][][] plansze = new String[2][rozmiar + 1][rozmiar + 1];
         for(int i = 0; i < plansze.length; i++) {
@@ -89,45 +84,6 @@ public class Plansza {
     // TODO do weryfikacji w pozniejszym etapie
 
     public boolean czyPolozeniePoprawne(PolozenieStatku polozenie) {
-        Pozycja pozycja = polozenie.getPozycja();
-        int x = pozycja.getX();
-        int y = pozycja.getY();
-        int dlugosc = polozenie.getDlugosc();
-        PolozenieStatku.Orientacja orientacja = polozenie.getOrientacja();
-        if(!pozycja.czyMiesciSieNaPlanszy(rozmiar)) {
-            return false;
-        }
-
-        if (orientacja == null) {
-            return false;
-        }
-        if(PolozenieStatku.Orientacja.PIONOWA.equals(orientacja)){
-            if(y + dlugosc >= rozmiar){
-                return false;
-            }
-        }
-        if(PolozenieStatku.Orientacja.POZIOMA.equals(orientacja)) {
-            if (x + dlugosc >= rozmiar) {
-                return false;
-            }
-        }
-
-        for(int i = 0; i < dlugosc; i++){
-            if(PolozenieStatku.Orientacja.PIONOWA.equals(orientacja)){
-                if(polaPlanszy[y + i][x] != null){
-                    return false;
-                }
-            }
-            if(PolozenieStatku.Orientacja.POZIOMA.equals(orientacja)) {
-                if(polaPlanszy[y][x + i] != null){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public boolean czyPolozeniePoprawneV2(PolozenieStatku polozenie) {
         Pozycja pozycja = polozenie.getPozycja();
         int x = pozycja.getX();
         int y = pozycja.getY();

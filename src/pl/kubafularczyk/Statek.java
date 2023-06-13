@@ -19,16 +19,8 @@ public class Statek {
         this.czesciStatku = czesciStatku;
     }
 
-    public int getDlugosc() {
-        return dlugosc;
-    }
-
     public void setDlugosc(int dlugosc) {
         this.dlugosc = dlugosc;
-    }
-
-    public char getZnak() {
-        return znak;
     }
 
     public void setZnak(char znak) {

@@ -25,28 +25,6 @@ public class Gra {
         komentator = new Komentator();
     }
 
-    private boolean sprawdzCzyToLiczba(String tekst) {
-        for(char znak : tekst.toCharArray()) {
-            if (!(znak >= '0' && znak <= '9')) {
-                return false;
-            }
-        }
-        return true;
-
-        /*
-        String liczba = tekst;
-        while(liczba.length() != 0) {
-            String cyfra = liczba.substring(0,1);
-            liczba = liczba.substring(1);
-            if (!(cyfra.charAt(0) >= '0' && cyfra.charAt(0) <= '9')) {
-                return false;
-            }
-        }
-
-        return true;
-        */
-    }
-
     private void stworzGraczy() {
         gracze = new Gracz[LICZBA_GRACZY];
         System.out.println("Gracz Zywy vs Gracz AI wpisz = 1\nGracz Zywy vs Gracz Zywy wpisz = 2\nGracz AI vs Gracz AI wpisz = 3");
@@ -176,7 +154,9 @@ public class Gra {
 
     private Pozycja pobierzPozycjeDoStrzalu(Gracz gracz) {
         while(true) {
-            System.out.println("Podaj pozycje do strzalu w formacie litera liczba np. A1, D7");
+            if(gracz instanceof GraczZywy) {
+                System.out.println("Podaj pozycje do strzalu w formacie litera liczba np. A1, D7");
+            }
             Pozycja pozycja = gracz.podajPozycjeStrzalu(plansza.getRozmiar());
             PolePlanszy polePlanszy = plansza.pobierzPolePlanszy(pozycja);
             if (null != polePlanszy) {

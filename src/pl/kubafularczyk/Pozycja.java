@@ -3,7 +3,6 @@ package pl.kubafularczyk;
 public class Pozycja {
     private int x;
     private int y;
-    // TODO zrob funkcje ktora bedzie sprawdzac pozycje (czy miesci sie na planszy, rozmiar jako argument)
 
     public Pozycja(int x, int y) {
         this.x = x;

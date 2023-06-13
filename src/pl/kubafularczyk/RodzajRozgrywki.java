@@ -1,6 +1,6 @@
 package pl.kubafularczyk;
 
-// TODO inna nazwa?
+
 public enum RodzajRozgrywki {
     GRACZ_ZYWY_VS_GRACZ_AI(1),
     GRACZ_ZYWY_VS_GRACZ_ZYWY(2),
