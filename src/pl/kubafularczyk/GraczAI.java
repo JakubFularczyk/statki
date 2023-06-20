@@ -1,5 +1,6 @@
 package pl.kubafularczyk;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class GraczAI extends Gracz {
@@ -19,11 +20,11 @@ public class GraczAI extends Gracz {
     }
 
     @Override
-    public Pozycja podajPozycjeStrzalu(int rozmiarPlanszy) {
+    public Optional<Pozycja> podajPozycjeStrzalu(int rozmiarPlanszy) {
 
         int pozycjaX = RANDOM.nextInt(rozmiarPlanszy);
         int pozycjaY = RANDOM.nextInt(rozmiarPlanszy);
         Pozycja pozycja = new Pozycja(pozycjaX, pozycjaY);
-        return pozycja;
+        return Optional.of(pozycja);
     }
 }

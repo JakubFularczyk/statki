@@ -2,6 +2,7 @@ package pl.kubafularczyk;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 // interface?
@@ -37,5 +38,5 @@ public abstract class Gracz {
 
     public abstract PolozenieStatku wybierzPolozenie(int rozmiarPlanszy);
 
-    public abstract Pozycja podajPozycjeStrzalu(int rozmiarPlanszy);
+    public abstract Optional<Pozycja> podajPozycjeStrzalu(int rozmiarPlanszy);
 }

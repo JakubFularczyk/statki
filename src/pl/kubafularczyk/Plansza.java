@@ -10,13 +10,18 @@ public class Plansza {
         this.rozmiar = rozmiar;
     }
 
-    public void wydrukuj2(Gracz[] gracze) {
+    public void wydrukujPlansze(Gracz[] gracze, RodzajRozgrywki rodzajRozgrywki) {
         String[][][] plansze = new String[2][rozmiar + 1][rozmiar + 1];
+        wstepnieWypelnij(plansze);
+        uzupelnijStatki(gracze, plansze);
+        wydrukuj(plansze, rodzajRozgrywki);
+    }
+
+    private void wstepnieWypelnij(String[][][] plansze) {
         for(int i = 0; i < plansze.length; i++) {
             for (int j = 0; j < rozmiar + 1; j++) {
                 for (int k = 0; k < rozmiar + 1; k++) {
                     plansze[i][j][k] = "."; // wstepne uzupelnienie
-
                     if(k == 0 && j == 0){
                         plansze[i][j][k] = leftPadSpace("\\") + "";
                     } else if(k == 0) {
@@ -29,7 +34,9 @@ public class Plansza {
                 }
             }
         }
+    }
 
+    private void uzupelnijStatki(Gracz[] gracze, String[][][] plansze) {
         for (int i = 0; i < gracze.length; i++) {
             Gracz gracz = gracze[i];
             String oznaczenie = gracz instanceof GraczZywy ? "Z" : "A";
@@ -43,18 +50,22 @@ public class Plansza {
                 plansze[i][pozycjaStrzalu.getY()+1][pozycjaStrzalu.getX()+1] = "X";
             }
         }
+    }
 
-
-        for(int i = 0; i < rozmiar + 1; i++){
-            int k = 0; // numer gracza/planszy
-            for(int j = 0; j <= rozmiar + 1 && k < 2; j++){
-                if(j == rozmiar + 1) {
+    private void wydrukuj(String[][][] plansze, RodzajRozgrywki rodzajRozgrywki) {
+        for(int wiersz = 0; wiersz < rozmiar + 1; wiersz++) {
+            int numerGracza = 0;
+            for(int kolumna = 0; kolumna <= rozmiar + 1 && numerGracza < 2; kolumna++){
+                if(kolumna == rozmiar + 1) {
+                    if(RodzajRozgrywki.GRACZ_ZYWY_VS_GRACZ_AI.equals(rodzajRozgrywki)) {
+                        break;
+                    }
+                    numerGracza++;
                     System.out.print("\t" + " ");
-                    k++;
-                    j = -1;
+                    kolumna = -1;
                     continue;
                 }
-                System.out.print(plansze[k][i][j] + " ");
+                System.out.print(plansze[numerGracza][wiersz][kolumna] + " ");
             }
             System.out.println();
         }
@@ -80,8 +91,6 @@ public class Plansza {
     public int getRozmiar() {
         return rozmiar;
     }
-
-    // TODO do weryfikacji w pozniejszym etapie
 
     public boolean czyPolozeniePoprawne(PolozenieStatku polozenie) {
         Pozycja pozycja = polozenie.getPozycja();
@@ -116,7 +125,6 @@ public class Plansza {
         int dlugosc = polozenie.getDlugosc();
         PolozenieStatku.Orientacja orientacja = polozenie.getOrientacja();
 
-        // jak stworzyc statek, jak stworzyc czesci statku, jak przypisac czesci statku do statku, jak dodac czesci statku do pol planszy
         Statek statek = new Statek(gracz);
         statek.setDlugosc(dlugosc);
         CzescStatku[] czesciStatku = new CzescStatku[dlugosc];

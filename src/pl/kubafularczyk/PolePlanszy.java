@@ -13,14 +13,6 @@ public class PolePlanszy {
         return czescStatku;
     }
 
-    public void setCzescStatku(CzescStatku czescStatku) {
-        this.czescStatku = czescStatku;
-    }
-
-    public boolean isTrafione() {
-        return trafione;
-    }
-
     public void oznaczJakoTrafione() {
         trafione = true;
         czescStatku.oznaczJakoTrafiona();

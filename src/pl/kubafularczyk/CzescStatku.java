@@ -18,17 +18,8 @@ public class CzescStatku {
         return zatopiona;
     }
 
-    public void zatop() {
-
-        this.zatopiona = true;
-    }
-
     public Pozycja getPozycja() {
         return pozycja;
-    }
-
-    public void setPozycja(Pozycja pozycja) {
-        this.pozycja = pozycja;
     }
 
     public void oznaczJakoTrafiona() {

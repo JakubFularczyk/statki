@@ -24,7 +24,6 @@ public class PolozenieStatku {
         this.orientacja = orientacja;
     }
 
-
     public Orientacja getOrientacja() {
         return orientacja;
     }
